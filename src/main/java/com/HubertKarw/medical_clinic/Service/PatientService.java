@@ -13,24 +13,24 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
 
-    public List<Patient> viewPatients(){
-        return patientRepository.viewPatients();
+    public List<Patient> getPatients() {
+        return patientRepository.getPatients();
     }
 
-    public Patient getPatient(String email){
+    public Patient getPatient(String email) {
         return patientRepository.findByEmail(email)
-                .orElseThrow(()-> new IllegalArgumentException("User with tis eMail address does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("User with tis eMail address does not exist"));
     }
 
-    public Patient addPatient (Patient patient){
+    public Patient addPatient(Patient patient) {
         return patientRepository.addPatient(patient);
     }
 
-    public void removePatient(String email){
+    public void removePatient(String email) {
         patientRepository.removePatient(email);
     }
 
-    public Patient modifyPatient(String email, Patient patient){
-        return patientRepository.modifyPatient(email,patient);
+    public Patient modifyPatient(String email, Patient patient) {
+        return patientRepository.modifyPatient(email, patient);
     }
 }
