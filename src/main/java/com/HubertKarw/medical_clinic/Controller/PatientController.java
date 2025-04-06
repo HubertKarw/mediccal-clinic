@@ -1,5 +1,6 @@
 package com.HubertKarw.medical_clinic.Controller;
 
+import com.HubertKarw.medical_clinic.Model.Password;
 import com.HubertKarw.medical_clinic.Model.Patient;
 import com.HubertKarw.medical_clinic.Service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -39,4 +40,10 @@ public class PatientController {
     public Patient modifyPatient(@PathVariable("email") String email, @RequestBody Patient patient) {
         return patientService.modifyPatient(email, patient);
     }
+
+    @PatchMapping("/{email}")
+    public Patient setPassword(@PathVariable("email") String email, @RequestBody Password password) {
+        return patientService.setPassword(email, password);
+    }
+
 }

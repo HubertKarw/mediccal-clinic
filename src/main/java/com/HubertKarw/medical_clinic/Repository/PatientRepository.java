@@ -1,5 +1,6 @@
 package com.HubertKarw.medical_clinic.Repository;
 
+import com.HubertKarw.medical_clinic.Model.Password;
 import com.HubertKarw.medical_clinic.Model.Patient;
 import com.HubertKarw.medical_clinic.Validation.PatientValidator;
 import lombok.RequiredArgsConstructor;
@@ -27,26 +28,30 @@ public class PatientRepository {
 
     public Patient addPatient(Patient patient) {
         PatientValidator.validatePatientCreation(patient);
-        PatientValidator.validateAddingPatient(new ArrayList<>(patients), patient.getEmail());
+        PatientValidator.validateAddingPatient(this, patient.getEmail());
         patients.add(patient);
         return patient;
     }
 
     public void removePatient(String email) {
-        Patient patient = patients.stream()
-                .filter(patient1 -> patient1.getEmail().equalsIgnoreCase(email))
-                .findFirst()
+        Patient patient = findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User with tis eMail address does not exist"));
         patients.remove(patient);
     }
 
     public Patient modifyPatient(String email, Patient newPatient) {
-        Patient patient = patients.stream()
-                .filter(pat -> pat.getEmail().equalsIgnoreCase(email))
-                .findFirst()
+        Patient patient = findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User with tis eMail address does not exist"));
         PatientValidator.validatePatientCreation(patient);
         PatientValidator.validatePatientUpdate(patient, newPatient);
+        PatientValidator.validateEmailUpdate(patient, newPatient, this);
         return patient.update(newPatient);
+    }
+
+    public Patient setPassword(String email, Password password) {
+        Patient patient = findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User with tis eMail address does not exist"));
+        patient.setPassword(password.getPassword());
+        return patient;
     }
 }

@@ -1,5 +1,6 @@
 package com.HubertKarw.medical_clinic.Service;
 
+import com.HubertKarw.medical_clinic.Model.Password;
 import com.HubertKarw.medical_clinic.Model.Patient;
 import com.HubertKarw.medical_clinic.Repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,9 @@ public class PatientService {
 
     public Patient modifyPatient(String email, Patient patient) {
         return patientRepository.modifyPatient(email, patient);
+    }
+
+    public Patient setPassword(String email, Password password) {
+        return patientRepository.setPassword(email, password);
     }
 }

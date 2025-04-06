@@ -1,6 +1,7 @@
 package com.HubertKarw.medical_clinic.Validation;
 
 import com.HubertKarw.medical_clinic.Model.Patient;
+import com.HubertKarw.medical_clinic.Repository.PatientRepository;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +10,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PatientValidator {
     public static void validatePatientCreation(Patient patient) {
-        if (patient.getEmail() == null || patient.getPassword() == null
-                || patient.getIdCardNo() == null || patient.getFirstName() == null
-                || patient.getLastName() == null || patient.getPhoneNumber() == null
-                || patient.getBirthday() == null) {
+        if (patient.getEmail() == null || patient.getPassword() == null || patient.getIdCardNo() == null || patient.getFirstName() == null || patient.getLastName() == null || patient.getPhoneNumber() == null || patient.getBirthday() == null) {
             throw new IllegalArgumentException("Patient has uninitialized fields");
         }
     }
@@ -22,9 +20,27 @@ public final class PatientValidator {
             throw new IllegalArgumentException("Patient cannot change idCardNo");
         }
     }
-    public static void validateAddingPatient(List<Patient> patients, String email){
-        if(!patients.isEmpty()){
-            if(patients.stream().map(Patient::getEmail).anyMatch(patientEmail -> patientEmail.equals(email))){
+
+    public static void validateEmailUpdate(Patient patient, Patient anotherPatient, PatientRepository repository) {
+        if (!patient.getEmail().equals(anotherPatient.getEmail())) {
+            List<Patient> otherPatients = repository.getPatients();
+            otherPatients.remove(patient);
+            if (otherPatients.stream()
+                    .map(Patient::getEmail)
+                    .anyMatch(patientEmail -> patientEmail.equals(anotherPatient.getEmail()))) {
+                throw new IllegalArgumentException("Cannot add patient with this email");
+            }
+        }
+    }
+
+
+    public static void validateAddingPatient(PatientRepository repository, String email) {
+        List<Patient> patients = repository.getPatients();
+
+        if (!patients.isEmpty()) {
+            if (patients.stream()
+                    .map(Patient::getEmail)
+                    .anyMatch(patientEmail -> patientEmail.equals(email))) {
                 throw new IllegalArgumentException("Cannot add patient with this email");
             }
         }
