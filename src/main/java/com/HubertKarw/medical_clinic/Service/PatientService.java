@@ -1,5 +1,6 @@
 package com.HubertKarw.medical_clinic.Service;
 
+import com.HubertKarw.medical_clinic.Exception.PatientNotFoundException;
 import com.HubertKarw.medical_clinic.Model.Password;
 import com.HubertKarw.medical_clinic.Model.Patient;
 import com.HubertKarw.medical_clinic.Repository.PatientRepository;
@@ -20,7 +21,7 @@ public class PatientService {
 
     public Patient getPatient(String email) {
         return patientRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User with tis eMail address does not exist"));
+                .orElseThrow(() -> new PatientNotFoundException("User with tis eMail address does not exist"));
     }
 
     public Patient addPatient(Patient patient) {

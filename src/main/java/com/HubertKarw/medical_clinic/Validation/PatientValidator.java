@@ -1,5 +1,6 @@
 package com.HubertKarw.medical_clinic.Validation;
 
+import com.HubertKarw.medical_clinic.Exception.PatientCreationException;
 import com.HubertKarw.medical_clinic.Model.Patient;
 import com.HubertKarw.medical_clinic.Repository.PatientRepository;
 import lombok.AccessLevel;
@@ -11,13 +12,13 @@ import java.util.List;
 public final class PatientValidator {
     public static void validatePatientCreation(Patient patient) {
         if (patient.getEmail() == null || patient.getPassword() == null || patient.getIdCardNo() == null || patient.getFirstName() == null || patient.getLastName() == null || patient.getPhoneNumber() == null || patient.getBirthday() == null) {
-            throw new IllegalArgumentException("Patient has uninitialized fields");
+            throw new PatientCreationException("Patient has uninitialized fields");
         }
     }
 
     public static void validatePatientUpdate(Patient patient, Patient anotherPatient) {
         if (!patient.getIdCardNo().equals(anotherPatient.getIdCardNo())) {
-            throw new IllegalArgumentException("Patient cannot change idCardNo");
+            throw new PatientCreationException("Patient cannot change idCardNo");
         }
     }
 
@@ -28,7 +29,7 @@ public final class PatientValidator {
             if (otherPatients.stream()
                     .map(Patient::getEmail)
                     .anyMatch(patientEmail -> patientEmail.equals(anotherPatient.getEmail()))) {
-                throw new IllegalArgumentException("Cannot add patient with this email");
+                throw new PatientCreationException("Cannot add patient with this email");
             }
         }
     }
@@ -41,7 +42,7 @@ public final class PatientValidator {
             if (patients.stream()
                     .map(Patient::getEmail)
                     .anyMatch(patientEmail -> patientEmail.equals(email))) {
-                throw new IllegalArgumentException("Cannot add patient with this email");
+                throw new PatientCreationException("Cannot add patient with this email");
             }
         }
     }
