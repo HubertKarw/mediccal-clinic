@@ -51,5 +51,4 @@ public class PatientController {
     public PatientDTO setPassword(@PathVariable("email") String email, @RequestBody Password password) {
         return PatientMapper.toDTO(patientService.setPassword(email, password));
     }
-
 }
