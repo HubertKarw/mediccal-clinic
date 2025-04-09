@@ -1,5 +1,6 @@
 package com.HubertKarw.medical_clinic.Service;
 
+import com.HubertKarw.medical_clinic.Exception.PatientCreationException;
 import com.HubertKarw.medical_clinic.Exception.PatientNotFoundException;
 import com.HubertKarw.medical_clinic.Model.Password;
 import com.HubertKarw.medical_clinic.Model.Patient;

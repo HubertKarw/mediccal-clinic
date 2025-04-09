@@ -5,9 +5,11 @@ import com.HubertKarw.medical_clinic.Model.Patient;
 import com.HubertKarw.medical_clinic.Repository.PatientRepository;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+import java.util.Optional;
+@Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PatientValidator {
     public static void validatePatientCreation(Patient patient) {
@@ -39,9 +41,13 @@ public final class PatientValidator {
         List<Patient> patients = repository.getPatients();
 
         if (!patients.isEmpty()) {
-            if (patients.stream()
-                    .map(Patient::getEmail)
-                    .anyMatch(patientEmail -> patientEmail.equals(email))) {
+//            if (patients.stream()
+//                    .map(Patient::getEmail)
+//                    .anyMatch(patientEmail -> patientEmail.equals(email))) {
+//                throw new PatientCreationException("Cannot add patient with this email");
+//            }
+            Optional<Patient> optionalPatient = repository.findByEmail(email);
+            if (optionalPatient.isPresent()){
                 throw new PatientCreationException("Cannot add patient with this email");
             }
         }

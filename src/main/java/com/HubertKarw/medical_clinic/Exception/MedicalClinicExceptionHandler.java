@@ -13,7 +13,7 @@ public class MedicalClinicExceptionHandler {
     }
     @ExceptionHandler(PatientCreationException.class)
     ResponseEntity<String> handlePatientCreationException(PatientCreationException pce){
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(pce.getMessage());
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(pce.getMessage());//400 request
     }
     @ExceptionHandler(Exception.class)
     ResponseEntity<String> handleExceptions(Exception e){
