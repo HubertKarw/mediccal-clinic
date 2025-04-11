@@ -13,7 +13,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PatientValidator {
     public static void validatePatientCreation(Patient patient) {
-        if (patient.getEmail() == null || patient.getPassword() == null || patient.getIdCardNo() == null || patient.getFirstName() == null || patient.getLastName() == null || patient.getPhoneNumber() == null || patient.getBirthday() == null) {
+        if (patient.getEmail() == null || patient.getUser() == null || patient.getIdCardNo() == null || patient.getFirstName() == null || patient.getLastName() == null || patient.getPhoneNumber() == null || patient.getBirthday() == null) {
             throw new PatientCreationException("Patient has uninitialized fields");
         }
     }
@@ -41,11 +41,6 @@ public final class PatientValidator {
         List<Patient> patients = repository.getPatients();
 
         if (!patients.isEmpty()) {
-//            if (patients.stream()
-//                    .map(Patient::getEmail)
-//                    .anyMatch(patientEmail -> patientEmail.equals(email))) {
-//                throw new PatientCreationException("Cannot add patient with this email");
-//            }
             Optional<Patient> optionalPatient = repository.findByEmail(email);
             if (optionalPatient.isPresent()){
                 throw new PatientCreationException("Cannot add patient with this email");

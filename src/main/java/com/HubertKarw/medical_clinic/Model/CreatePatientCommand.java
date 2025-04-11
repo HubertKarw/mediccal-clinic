@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CreatePatientCommand {
         private String email;
-        private String password;
+        private User user;
         private String idCardNo;
         private String firstName;
         private String lastName;

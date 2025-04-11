@@ -5,8 +5,9 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
+
 @Data
+@AllArgsConstructor
 public class PatientDTO {
         private String email;
         private String firstName;

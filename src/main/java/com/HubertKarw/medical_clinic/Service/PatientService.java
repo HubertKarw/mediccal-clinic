@@ -22,7 +22,7 @@ public class PatientService {
 
     public Patient getPatient(String email) {
         return patientRepository.findByEmail(email)
-                .orElseThrow(() -> new PatientNotFoundException("User with tis eMail address does not exist"));
+                .orElseThrow(() -> new PatientNotFoundException("Patient with tis eMail address does not exist"));
     }
 
     public Patient addPatient(Patient patient) {

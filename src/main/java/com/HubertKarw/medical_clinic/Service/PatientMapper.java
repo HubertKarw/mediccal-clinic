@@ -11,6 +11,6 @@ public class PatientMapper {
 
     }
     public static Patient toPatient(CreatePatientCommand command){
-        return new Patient(command.getEmail(), command.getPassword(), command.getIdCardNo(), command.getFirstName(), command.getLastName(), command.getPhoneNumber(),command.getBirthday());
+        return new Patient(command.getEmail(), command.getUser(), command.getIdCardNo(), command.getFirstName(), command.getLastName(), command.getPhoneNumber(),command.getBirthday());
     }
 }
