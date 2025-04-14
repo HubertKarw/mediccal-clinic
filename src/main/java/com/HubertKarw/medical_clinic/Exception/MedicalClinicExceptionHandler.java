@@ -8,13 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class MedicalClinicExceptionHandler {
-    @ExceptionHandler(PatientNotFoundException.class)
-    ResponseEntity<ErrorMessage> handlePatientNotFound(PatientNotFoundException exception){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(exception.getMessage()));
-    }
-    @ExceptionHandler(PatientCreationException.class)
-    ResponseEntity<ErrorMessage> handlePatientCreationException(PatientCreationException exception){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(exception.getMessage()));//400 request
+    @ExceptionHandler(MedicalClinicException.class)
+    ResponseEntity<ErrorMessage> handlePatientNotFound(MedicalClinicException exception){
+        return ResponseEntity.status(exception.getStatus()).body(new ErrorMessage(exception.getMessage()));
     }
     @ExceptionHandler(Exception.class)
     ResponseEntity<ErrorMessage> handleExceptions(Exception exception){
