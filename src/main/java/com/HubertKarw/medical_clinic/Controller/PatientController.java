@@ -67,7 +67,7 @@ public class PatientController {
     }
     @Operation(summary = "Remove patient")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "removed patient", content = {@Content}),
+            @ApiResponse(responseCode = "204", description = "removed patient", content = {@Content}),
             @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content)
     })
     @DeleteMapping("/{email}")

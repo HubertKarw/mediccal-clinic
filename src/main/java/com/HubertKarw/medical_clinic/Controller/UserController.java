@@ -66,7 +66,7 @@ public class UserController {
     }
     @Operation(summary = "delete User by username")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found user", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = UserDTO.class))}),
+            @ApiResponse(responseCode = "204", description = "removed user", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @DeleteMapping("/{username}")
