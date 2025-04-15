@@ -1,20 +1,38 @@
 package com.HubertKarw.medical_clinic.Model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
+@Entity
+@Table(name = "PATIENT")
 public class Patient {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
     private String email;
+    @Transient
     private User user;
+    @Column(name = "idcard")
     private String idCardNo;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "phone_number")
     private String phoneNumber;
+    @Temporal(TemporalType.DATE)
     private LocalDate birthday;
+
+    public Patient(String email, User user, String idCardNo, String firstName, String lastName, String phoneNumber, LocalDate birthday) {
+    }
+
 
     public Patient update(Patient anotherPatient) {
         this.setEmail(anotherPatient.getEmail());
