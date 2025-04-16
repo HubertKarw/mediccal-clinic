@@ -4,6 +4,7 @@ import com.HubertKarw.medical_clinic.Model.CreatePatientCommand;
 import com.HubertKarw.medical_clinic.Model.Password;
 import com.HubertKarw.medical_clinic.Model.Patient;
 import com.HubertKarw.medical_clinic.Model.PatientDTO;
+import com.HubertKarw.medical_clinic.Service.PatientJpaService;
 import com.HubertKarw.medical_clinic.Service.PatientMapper;
 import com.HubertKarw.medical_clinic.Service.PatientService;
 import com.HubertKarw.medical_clinic.Service.PatientStructMapper;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/patients")
 public class PatientController {
 
-    private final PatientService patientService;
+    private final PatientJpaService patientService;
     private final PatientStructMapper mapper;
 
     @Operation(summary = "Get all patients")
@@ -92,21 +93,21 @@ public class PatientController {
                                     @RequestBody CreatePatientCommand patient) {
         return mapper.mapToDTO(patientService.modifyPatient(email, mapper.mapToPatient(patient)));
     }
-    @Operation(summary = "edit patients password")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Edited patient password", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = PatientDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content),
-            @ApiResponse(responseCode = "400", description = "Patient is not valid", content = @Content)
-    })
-    @PatchMapping("/{email}")
-    public PatientDTO setPassword(@PathVariable("email") String email,
-                                  @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                                          description = "Patient to create", required = true,
-                                          content = @Content(mediaType = "application/json",
-                                                  schema = @Schema(implementation = CreatePatientCommand.class),
-                                                  examples = @ExampleObject(value = "{ \"Email\": \"email\", \"User\": \"User\", \"idCardNO\": \"1234\"" +
-                                                          ", \"firstName\": \"John\", \"lastName\": \"Doe\",  \"phoneNumber\": \"123456789\",  \"birthday\": \"1999-01-01\"}")))
-                                  @RequestBody Password password) {
-        return mapper.mapToDTO(patientService.setPassword(email, password));
-    }
+//    @Operation(summary = "edit patients password")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Edited patient password", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = PatientDTO.class))}),
+//            @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content),
+//            @ApiResponse(responseCode = "400", description = "Patient is not valid", content = @Content)
+//    })
+//    @PatchMapping("/{email}")
+//    public PatientDTO setPassword(@PathVariable("email") String email,
+//                                  @io.swagger.v3.oas.annotations.parameters.RequestBody(
+//                                          description = "Patient to create", required = true,
+//                                          content = @Content(mediaType = "application/json",
+//                                                  schema = @Schema(implementation = CreatePatientCommand.class),
+//                                                  examples = @ExampleObject(value = "{ \"Email\": \"email\", \"User\": \"User\", \"idCardNO\": \"1234\"" +
+//                                                          ", \"firstName\": \"John\", \"lastName\": \"Doe\",  \"phoneNumber\": \"123456789\",  \"birthday\": \"1999-01-01\"}")))
+//                                  @RequestBody Password password) {
+//        return mapper.mapToDTO(patientService.setPassword(email, password));
+//    }
 }
