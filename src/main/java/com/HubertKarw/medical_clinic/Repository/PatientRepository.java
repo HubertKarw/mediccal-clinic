@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class PatientRepository  {
+public class PatientRepository {
 
     private final List<Patient> patients;
 

@@ -10,12 +10,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+
 @Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PatientValidator {
     public static void validatePatientCreation(Patient patient) {
         if (patient.getEmail() == null || patient.getUser() == null || patient.getIdCardNo() == null || patient.getFirstName() == null || patient.getLastName() == null || patient.getPhoneNumber() == null || patient.getBirthday() == null) {
-            throw new PatientCreationException("Patient has uninitialized fields",HttpStatus.BAD_REQUEST);
+            throw new PatientCreationException("Patient has uninitialized fields", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -43,7 +44,7 @@ public final class PatientValidator {
 
         if (!patients.isEmpty()) {
             Optional<Patient> optionalPatient = repository.findByEmail(email);
-            if (optionalPatient.isPresent()){
+            if (optionalPatient.isPresent()) {
                 throw new PatientCreationException("Cannot add patient with this email", HttpStatus.BAD_REQUEST);
             }
         }

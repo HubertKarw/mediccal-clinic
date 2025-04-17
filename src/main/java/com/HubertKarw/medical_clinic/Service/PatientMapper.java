@@ -10,7 +10,8 @@ public class PatientMapper {
                 patient.getLastName(), patient.getPhoneNumber(), patient.getBirthday());
 
     }
-    public static Patient toPatient(CreatePatientCommand command){
-        return new Patient(command.getEmail(), command.getUser(), command.getIdCardNo(), command.getFirstName(), command.getLastName(), command.getPhoneNumber(),command.getBirthday());
+
+    public static Patient toPatient(CreatePatientCommand command) {
+        return new Patient(command.getEmail(), command.getUser(), command.getIdCardNo(), command.getFirstName(), command.getLastName(), command.getPhoneNumber(), command.getBirthday());
     }
 }

@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserStructMapper {
 
-//    @Mapping(source = "username",target = "username")
+    //    @Mapping(source = "username",target = "username")
     public UserDTO toDto(User user);
 
     public User toUser(CreateUserCommand command);

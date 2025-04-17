@@ -15,26 +15,30 @@ import java.util.List;
 public class PatientJpaService {
     private final PatientJpaRepository repository;
 
-    public List<Patient> getPatients(){
+    public List<Patient> getPatients() {
         return repository.findAll();
     }
-    public Patient getPatient(String email){
+
+    public Patient getPatient(String email) {
         return repository.findByEmail(email)
-                .orElseThrow(()->new PatientNotFoundException("Patient with this email does not exist"));
+                .orElseThrow(() -> new PatientNotFoundException("Patient with this email does not exist"));
     }
-    public Patient addPatient(Patient patient){
+
+    public Patient addPatient(Patient patient) {
         PatientJPAValidator.validatePatientCreation(patient);
         PatientJPAValidator.validateAddingPatient(repository, patient.getEmail());
         return repository.save(patient);
     }
-    public void removePatient(String email){
+
+    public void removePatient(String email) {
         Patient patient = repository.findByEmail(email)
-                .orElseThrow(()-> new PatientNotFoundException("no patient with this email"));
+                .orElseThrow(() -> new PatientNotFoundException("no patient with this email"));
         repository.delete(patient);
     }
-    public Patient modifyPatient(String email, Patient newPatient){
+
+    public Patient modifyPatient(String email, Patient newPatient) {
         Patient patient = repository.findByEmail(email)
-                .orElseThrow(()->new PatientNotFoundException("no patient with this email"));
+                .orElseThrow(() -> new PatientNotFoundException("no patient with this email"));
         PatientJPAValidator.validatePatientCreation(newPatient);
         PatientJPAValidator.validatePatientUpdate(patient, newPatient);
         PatientJPAValidator.validateEmailUpdate(patient, newPatient, repository);

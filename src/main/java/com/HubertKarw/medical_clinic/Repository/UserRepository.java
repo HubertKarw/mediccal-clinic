@@ -14,26 +14,30 @@ public class UserRepository {
 
     private final List<User> users;
 
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return new ArrayList<>(users);
     }
-    public Optional<User> findByUsername(String username){
+
+    public Optional<User> findByUsername(String username) {
         return users.stream()
                 .filter(user -> user.getUsername().equalsIgnoreCase(username))
                 .findFirst();
     }
-    public User addUser(User user){
+
+    public User addUser(User user) {
         users.add(user);
         return user;
     }
-    public void removeUser(String username){
+
+    public void removeUser(String username) {
         User user = findByUsername(username)
-                .orElseThrow(()->new IllegalArgumentException("no user found with this username"));
+                .orElseThrow(() -> new IllegalArgumentException("no user found with this username"));
         users.remove(user);
     }
-    public User modifyUser(String username, User newUser){
+
+    public User modifyUser(String username, User newUser) {
         User user = findByUsername(username)
-                .orElseThrow(()->new IllegalArgumentException("no user found with this username"));
+                .orElseThrow(() -> new IllegalArgumentException("no user found with this username"));
         user.update(newUser);
         return user;
     }

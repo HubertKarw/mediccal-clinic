@@ -45,7 +45,7 @@ public class PatientJPAValidator {
 
         if (!patients.isEmpty()) {
             Optional<Patient> optionalPatient = repository.findByEmail(email);
-            if (optionalPatient.isPresent()){
+            if (optionalPatient.isPresent()) {
                 throw new PatientCreationException("Cannot add patient with this email", HttpStatus.BAD_REQUEST);
             }
         }

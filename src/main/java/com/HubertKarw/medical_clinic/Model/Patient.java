@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table(name = "PATIENT")
 public class Patient {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     @Transient

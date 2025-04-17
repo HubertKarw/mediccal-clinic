@@ -9,10 +9,10 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class PatientDTO {
-        private String email;
-        private String firstName;
-        private String lastName;
-        private String phoneNumber;
-        private LocalDate birthday;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private LocalDate birthday;
 
 }

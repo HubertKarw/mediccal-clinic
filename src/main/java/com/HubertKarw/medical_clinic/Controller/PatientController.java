@@ -34,25 +34,27 @@ public class PatientController {
 
     @Operation(summary = "Get all patients")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found patients", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = PatientDTO.class))})})
+            @ApiResponse(responseCode = "200", description = "Found patients", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))})})
     @GetMapping
     public List<PatientDTO> getPatients() {
         return patientService.getPatients().stream()
                 .map(mapper::mapToDTO)
                 .collect(Collectors.toList());
     }
+
     @Operation(summary = "Get patient by email")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found patient", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = PatientDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Found patient", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))}),
             @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content)
     })
     @GetMapping("/{email}")
     public PatientDTO getPatient(@PathVariable("email") String email) {
         return mapper.mapToDTO(patientService.getPatient(email));
     }
+
     @Operation(summary = "create patient")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Created patient", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = PatientDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Created patient", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))}),
             @ApiResponse(responseCode = "400", description = "Patient is not valid", content = @Content)
     })
     @PostMapping
@@ -63,9 +65,10 @@ public class PatientController {
                     schema = @Schema(implementation = CreatePatientCommand.class),
                     examples = @ExampleObject(value = "{ \"Email\": \"email\", \"User\": \"User\", \"idCardNO\": \"1234\"" +
                             ", \"firstName\": \"John\", \"lastName\": \"Doe\",  \"phoneNumber\": \"123456789\",  \"birthday\": \"1999-01-01\"}")))
-            @RequestBody CreatePatientCommand command) {
+                                 @RequestBody CreatePatientCommand command) {
         return mapper.mapToDTO(patientService.addPatient(mapper.mapToPatient(command)));
     }
+
     @Operation(summary = "Remove patient")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "removed patient", content = {@Content}),
@@ -76,9 +79,10 @@ public class PatientController {
     public void removePatient(@PathVariable("email") String email) {
         patientService.removePatient(email);
     }
+
     @Operation(summary = "edit patient")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Edited patient information", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = PatientDTO.class))}),
+            @ApiResponse(responseCode = "200", description = "Edited patient information", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))}),
             @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Patient is not valid", content = @Content)
     })

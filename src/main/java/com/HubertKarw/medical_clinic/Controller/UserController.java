@@ -29,64 +29,41 @@ public class UserController {
 
     private final UserService userService;
     private final UserStructMapper mapper;
+
     @Operation(summary = "Get all Users")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found User",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDTO.class))})})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Found User", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))})})
     @GetMapping
-    public List<UserDTO> getUsers(){
-        return userService.getUsers()
-                .stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+    public List<UserDTO> getUsers() {
+        return userService.getUsers().stream().map(mapper::toDto).collect(Collectors.toList());
     }
+
     @Operation(summary = "Get User by username")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found user", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = UserDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Found user", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))}), @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
     @GetMapping("/{username}")
-    public  UserDTO getUser(@PathVariable("username") String username){
+    public UserDTO getUser(@PathVariable("username") String username) {
         return mapper.toDto(userService.getUser(username));
     }
+
     @Operation(summary = "Create user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "created user", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = UserDTO.class))}),
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "created user", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))}),})
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO addUser(@io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "User to create", required = true,
-            content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = CreateUserCommand.class),
-                    examples = @ExampleObject(value = "{ \"username\": \"user123\", \"password\": \"password\"}")))
-            @RequestBody CreateUserCommand command){
+    public UserDTO addUser(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User to create", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUserCommand.class), examples = @ExampleObject(value = "{ \"username\": \"user123\", \"password\": \"password\"}"))) @RequestBody CreateUserCommand command) {
         return mapper.toDto(userService.addUser(mapper.toUser(command)));
     }
+
     @Operation(summary = "delete User by username")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "removed user", content = @Content),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "removed user", content = @Content), @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
     @DeleteMapping("/{username}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeUser(@PathVariable("username") String username){
+    public void removeUser(@PathVariable("username") String username) {
         userService.removeUser(username);
     }
+
     @Operation(summary = "modify User by username")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found user", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = UserDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Found user", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))}), @ApiResponse(responseCode = "404", description = "User not found", content = @Content)})
     @PutMapping("/{username}")
-    public UserDTO modifyUser(@PathVariable("username")String username,
-                              @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                                      description = "modified user", required = true,
-                                      content = @Content(mediaType = "application/json",
-                                              schema = @Schema(implementation = CreateUserCommand.class),
-                                              examples = @ExampleObject(value = "{ \"username\": \"user123\", \"password\": \"password\"}")))
-                              @RequestBody CreateUserCommand command){
-        return mapper.toDto(userService.modifyUser(username,mapper.toUser(command)));
+    public UserDTO modifyUser(@PathVariable("username") String username, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "modified user", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateUserCommand.class), examples = @ExampleObject(value = "{ \"username\": \"user123\", \"password\": \"password\"}"))) @RequestBody CreateUserCommand command) {
+        return mapper.toDto(userService.modifyUser(username, mapper.toUser(command)));
     }
 }

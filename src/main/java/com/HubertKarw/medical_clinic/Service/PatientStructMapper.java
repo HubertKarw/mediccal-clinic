@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PatientStructMapper {
-//    @Mapping(source = "email",target = "email")
+    //    @Mapping(source = "email",target = "email")
     public PatientDTO mapToDTO(Patient patient);
 
     public Patient mapToPatient(CreatePatientCommand command);
