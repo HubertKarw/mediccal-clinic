@@ -1,0 +1,40 @@
+package com.HubertKarw.medical_clinic.Service;
+
+import com.HubertKarw.medical_clinic.Model.User;
+import com.HubertKarw.medical_clinic.Repository.UserJpaRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class UserJpaService {
+    private final UserJpaRepository repository;
+
+    public List<User> getUsers() {
+        return repository.findAll();
+    }
+
+    public User getUser(String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("no such user"));
+    }
+
+    public User addUser(User user) {
+        return repository.save(user);
+    }
+
+    public void removeUser(String username) {
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("no such user"));
+        repository.delete(user);
+    }
+
+    public User modifyUser(String username, User newUser) {
+        User user = repository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("no such user"));
+        user.update(newUser);
+        return repository.save(user);
+    }
+}

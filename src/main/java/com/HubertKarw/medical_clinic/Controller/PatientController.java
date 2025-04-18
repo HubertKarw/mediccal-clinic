@@ -1,9 +1,6 @@
 package com.HubertKarw.medical_clinic.Controller;
 
-import com.HubertKarw.medical_clinic.Model.CreatePatientCommand;
-import com.HubertKarw.medical_clinic.Model.Password;
-import com.HubertKarw.medical_clinic.Model.Patient;
-import com.HubertKarw.medical_clinic.Model.PatientDTO;
+import com.HubertKarw.medical_clinic.Model.*;
 import com.HubertKarw.medical_clinic.Service.PatientJpaService;
 import com.HubertKarw.medical_clinic.Service.PatientMapper;
 import com.HubertKarw.medical_clinic.Service.PatientService;
@@ -45,14 +42,14 @@ public class PatientController {
     @Operation(summary = "Get patient by email")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found patient", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Patient not found", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))})
     })
     @GetMapping("/{email}")
     public PatientDTO getPatient(@PathVariable("email") String email) {
         return mapper.mapToDTO(patientService.getPatient(email));
     }
 
-    @Operation(summary = "create patient")
+    @Operation(summary = "Create patient")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created patient", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))}),
             @ApiResponse(responseCode = "400", description = "Patient is not valid", content = @Content)
@@ -71,8 +68,8 @@ public class PatientController {
 
     @Operation(summary = "Remove patient")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "removed patient", content = {@Content}),
-            @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Removed patient", content = {@Content}),
+            @ApiResponse(responseCode = "404", description = "Patient not found", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))})
     })
     @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -80,10 +77,10 @@ public class PatientController {
         patientService.removePatient(email);
     }
 
-    @Operation(summary = "edit patient")
+    @Operation(summary = "Edit patient")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Edited patient information", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Patient not found", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))}),
             @ApiResponse(responseCode = "400", description = "Patient is not valid", content = @Content)
     })
     @PutMapping("/{email}")
@@ -92,14 +89,14 @@ public class PatientController {
                                             description = "Patient to create", required = true,
                                             content = @Content(mediaType = "application/json",
                                                     schema = @Schema(implementation = CreatePatientCommand.class),
-                                                    examples = @ExampleObject(value = "{ \"Email\": \"email\", \"User\": \"User\", \"idCardNO\": \"1234\"" +
+                                                    examples = @ExampleObject(value = "{ \"email\": \"email\", \"user\": \"User\", \"idCardNo\": \"1234\"" +
                                                             ", \"firstName\": \"John\", \"lastName\": \"Doe\",  \"phoneNumber\": \"123456789\",  \"birthday\": \"1999-01-01\"}")))
                                     @RequestBody CreatePatientCommand patient) {
         return mapper.mapToDTO(patientService.modifyPatient(email, mapper.mapToPatient(patient)));
     }
 //    @Operation(summary = "edit patients password")
 //    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Edited patient password", content = {@Content(mediaType = "application/json",schema = @Schema(implementation = PatientDTO.class))}),
+//            @ApiResponse(responseCode = "200", description = "Edited patient password",content = {@Content(mediaType = "application/json",schema = @Schema(implementation = PatientDTO.class))}),
 //            @ApiResponse(responseCode = "404", description = "Patient not found", content = @Content),
 //            @ApiResponse(responseCode = "400", description = "Patient is not valid", content = @Content)
 //    })

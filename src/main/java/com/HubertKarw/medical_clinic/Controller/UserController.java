@@ -4,6 +4,7 @@ import com.HubertKarw.medical_clinic.Model.CreatePatientCommand;
 import com.HubertKarw.medical_clinic.Model.CreateUserCommand;
 import com.HubertKarw.medical_clinic.Model.PatientDTO;
 import com.HubertKarw.medical_clinic.Model.UserDTO;
+import com.HubertKarw.medical_clinic.Service.UserJpaService;
 import com.HubertKarw.medical_clinic.Service.UserService;
 import com.HubertKarw.medical_clinic.Service.UserStructMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 @Tag(name = "User", description = "User operations")
 public class UserController {
 
-    private final UserService userService;
+    private final UserJpaService userService;
     private final UserStructMapper mapper;
 
     @Operation(summary = "Get all Users")
