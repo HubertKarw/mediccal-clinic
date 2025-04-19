@@ -18,8 +18,6 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
-    @OneToOne(mappedBy = "user")
-    private Patient patient;
 
     public User update(User newUser) {
         this.setUsername(newUser.getUsername());

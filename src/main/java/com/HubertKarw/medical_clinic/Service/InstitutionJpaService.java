@@ -1,0 +1,42 @@
+package com.HubertKarw.medical_clinic.Service;
+
+import com.HubertKarw.medical_clinic.Exception.MedicalClinicException;
+import com.HubertKarw.medical_clinic.Model.Institution;
+import com.HubertKarw.medical_clinic.Repository.InstitutionJpaRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class InstitutionJpaService {
+    private final InstitutionJpaRepository repository;
+
+    public List<Institution> getInstitutions() {
+        return repository.findAll();
+    }
+
+    public Institution getInstitution(String name) {
+        return repository.findByName(name)
+                .orElseThrow(() -> new MedicalClinicException("INSTITUTION NOT FOUND", HttpStatus.NOT_FOUND));
+    }
+
+    public Institution addInstitution(Institution institution) {
+        return repository.save(institution);
+    }
+
+    public void removeInstitution(String name) {
+        Institution institution = repository.findByName(name)
+                .orElseThrow(() -> new MedicalClinicException("INSTITUTION NOT FOUND", HttpStatus.NOT_FOUND));
+        repository.delete(institution);
+    }
+
+    public Institution modifyInstitution(String name, Institution newInstitution) {
+        Institution institution = repository.findByName(name)
+                .orElseThrow(() -> new MedicalClinicException("INSTITUTION NOT FOUND", HttpStatus.NOT_FOUND));
+        institution.update(newInstitution);
+        return repository.save(institution);
+    }
+}
