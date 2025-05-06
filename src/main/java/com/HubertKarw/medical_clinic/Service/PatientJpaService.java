@@ -6,6 +6,8 @@ import com.HubertKarw.medical_clinic.Repository.PatientJpaRepository;
 import com.HubertKarw.medical_clinic.Validation.PatientJPAValidator;
 import com.HubertKarw.medical_clinic.Validation.PatientValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +17,9 @@ import java.util.List;
 public class PatientJpaService {
     private final PatientJpaRepository repository;
 
-    public List<Patient> getPatients() {
-        return repository.findAll();
+    public List<Patient> getPatients(Pageable pageable) {
+        Page<Patient> patients = repository.findAll(pageable);
+        return patients.getContent();
     }
 
     public Patient getPatient(String email) {

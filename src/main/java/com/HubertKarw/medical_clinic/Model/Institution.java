@@ -33,4 +33,21 @@ public class Institution {
         this.setStreetNumber(newInstitution.getStreetNumber());
 //        this.setDoctors(newInstitution.getDoctors());
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Institution))
+            return false;
+
+        Institution other = (Institution) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +35,10 @@ public class PatientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found patients", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))})})
     @GetMapping
-    public List<PatientDTO> getPatients() {
-        return patientService.getPatients().stream()
+    public List<PatientDTO> getPatients(@RequestParam(name = "page", defaultValue = "0") int page) {
+        int size = 2;
+        Pageable pageable = PageRequest.of(page,size);
+        return patientService.getPatients(pageable).stream()
                 .map(mapper::mapToDTO)
                 .collect(Collectors.toList());
     }

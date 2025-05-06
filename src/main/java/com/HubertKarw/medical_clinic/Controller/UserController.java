@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +36,10 @@ public class UserController {
     @Operation(summary = "Get all Users")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Found User", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))})})
     @GetMapping
-    public List<UserDTO> getUsers() {
-        return userService.getUsers().stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<UserDTO> getUsers(@RequestParam(name = "page", defaultValue = "0") int page) {
+        int size = 2;
+        Pageable pageable = PageRequest.of(page,size);
+        return userService.getUsers(pageable).stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Operation(summary = "Get User by username")

@@ -3,6 +3,8 @@ package com.HubertKarw.medical_clinic.Service;
 import com.HubertKarw.medical_clinic.Model.User;
 import com.HubertKarw.medical_clinic.Repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +14,9 @@ import java.util.List;
 public class UserJpaService {
     private final UserJpaRepository repository;
 
-    public List<User> getUsers() {
-        return repository.findAll();
+    public List<User> getUsers(Pageable pageable) {
+        Page<User> users = repository.findAll(pageable);
+        return users.getContent();
     }
 
     public User getUser(String username) {

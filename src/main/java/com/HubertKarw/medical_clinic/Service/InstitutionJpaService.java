@@ -4,6 +4,8 @@ import com.HubertKarw.medical_clinic.Exception.MedicalClinicException;
 import com.HubertKarw.medical_clinic.Model.Institution;
 import com.HubertKarw.medical_clinic.Repository.InstitutionJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,9 @@ import java.util.List;
 public class InstitutionJpaService {
     private final InstitutionJpaRepository repository;
 
-    public List<Institution> getInstitutions() {
-        return repository.findAll();
+    public List<Institution> getInstitutions(Pageable pageable) {
+        Page<Institution> institutions = repository.findAll(pageable);
+        return institutions.getContent();
     }
 
     public Institution getInstitution(String name) {

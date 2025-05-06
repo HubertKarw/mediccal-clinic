@@ -6,6 +6,9 @@ import com.HubertKarw.medical_clinic.Model.DoctorDTO;
 import com.HubertKarw.medical_clinic.Model.PatientDTO;
 import com.HubertKarw.medical_clinic.Service.DoctorJpaService;;
 import com.HubertKarw.medical_clinic.mappers.DoctorStructMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,8 +35,10 @@ public class DoctorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found patients", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Doctor.class))})})
     @GetMapping()
-    public List<DoctorDTO> getDoctors() {
-        return service.getDoctors().stream()
+    public List<DoctorDTO> getDoctors(@RequestParam(name = "page", defaultValue = "0") int page) {
+        int size = 2;
+        Pageable pageable = PageRequest.of(page,size);
+        return service.getDoctors(pageable).stream()
                 .peek(System.out::println)
                 .map(mapper::mapToDTO)
                 .collect(toList());

@@ -7,6 +7,8 @@ import com.HubertKarw.medical_clinic.Model.Institution;
 import com.HubertKarw.medical_clinic.Repository.DoctorJpaRepository;
 import com.HubertKarw.medical_clinic.Repository.InstitutionJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,9 @@ public class DoctorJpaService {
     private final DoctorJpaRepository repository;
     private final InstitutionJpaRepository institutionRepository;
 
-    public List<Doctor> getDoctors() {
-        return repository.findAll();
+    public List<Doctor> getDoctors(Pageable pageable) {
+        Page<Doctor> doctors = repository.findAll(pageable);
+        return doctors.getContent();
     }
 
     public Doctor getDoctor(String email) {
