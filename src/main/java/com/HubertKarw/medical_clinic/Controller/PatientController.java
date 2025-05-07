@@ -56,7 +56,7 @@ public class PatientController {
     @Operation(summary = "Create patient")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created patient", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))}),
-            @ApiResponse(responseCode = "400", description = "Patient is not valid", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Patient is not valid", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))})
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -64,13 +64,13 @@ public class PatientController {
             description = "Patient to create", required = true,
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = CreatePatientCommand.class),
-                    examples = @ExampleObject(value = "{ \"Email\": \"email\", \"User\": \"User\", \"idCardNO\": \"1234\"" +
+                    examples = @ExampleObject(value = "{ \"Email\": \"email\", \"User\": \"User\", \"idCardNo\": \"1234\"" +
                             ", \"firstName\": \"John\", \"lastName\": \"Doe\",  \"phoneNumber\": \"123456789\",  \"birthday\": \"1999-01-01\"}")))
                                  @RequestBody CreatePatientCommand command) {
         return mapper.mapToDTO(patientService.addPatient(mapper.mapToPatient(command)));
     }
 
-    @Operation(summary = "Remove patient")
+    @Operation(summary = "Remove patient by email")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Removed patient", content = {@Content}),
             @ApiResponse(responseCode = "404", description = "Patient not found", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))})

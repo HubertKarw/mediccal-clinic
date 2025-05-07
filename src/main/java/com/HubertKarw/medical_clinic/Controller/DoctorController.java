@@ -34,12 +34,10 @@ public class DoctorController {
     @Operation(summary = "Get all doctors")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found patients", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Doctor.class))})})
-    @GetMapping()
-    public List<DoctorDTO> getDoctors(@RequestParam(name = "page", defaultValue = "0") int page) {
-        int size = 2;
+    @GetMapping
+    public List<DoctorDTO> getDoctors(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "0") int size) {
         Pageable pageable = PageRequest.of(page,size);
         return service.getDoctors(pageable).stream()
-                .peek(System.out::println)
                 .map(mapper::mapToDTO)
                 .collect(toList());
     }
@@ -68,7 +66,7 @@ public class DoctorController {
         return mapper.mapToDTO(service.modifyDoctor(email, mapper.mapToDoctor(command)));
     }
 
-    @PatchMapping("/{email}/{name}")
+    @PatchMapping("/{email}/institutions/{name}")
     public DoctorDTO assignToInstitution(@PathVariable("email") String email, @PathVariable("name") String name) {
         return mapper.mapToDTO(service.assignToInstitution(email, name));
     }
