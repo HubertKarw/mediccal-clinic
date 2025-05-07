@@ -25,9 +25,7 @@ public class InstitutionController {
     private final InstitutionStructMapper mapper;
 
     @GetMapping
-    public List<InstitutionDTO> getInsitutions(@RequestParam(name = "page", defaultValue = "0") int page) {
-        int size = 2;
-        Pageable pageable = PageRequest.of(page,size);
+    public List<InstitutionDTO> getInsitutions(Pageable pageable) {
         return service.getInstitutions(pageable).stream()
                 .map(mapper::mapToDTO)
                 .collect(toList());

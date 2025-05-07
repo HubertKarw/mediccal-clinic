@@ -36,9 +36,7 @@ public class UserController {
     @Operation(summary = "Get all Users")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Found User", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))})})
     @GetMapping
-    public List<UserDTO> getUsers(@RequestParam(name = "page", defaultValue = "0") int page) {
-        int size = 2;
-        Pageable pageable = PageRequest.of(page,size);
+    public List<UserDTO> getUsers(Pageable pageable) {
         return userService.getUsers(pageable).stream().map(mapper::toDto).collect(Collectors.toList());
     }
 

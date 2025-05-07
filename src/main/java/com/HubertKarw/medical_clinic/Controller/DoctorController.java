@@ -35,8 +35,10 @@ public class DoctorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found patients", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Doctor.class))})})
     @GetMapping
-    public List<DoctorDTO> getDoctors(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "0") int size) {
-        Pageable pageable = PageRequest.of(page,size);
+    public List<DoctorDTO> getDoctors(Pageable pageable) {
+//        zostawione zeby wiedziec jak dziala
+//    public List<DoctorDTO> getDoctors(@RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "size", defaultValue = "0") int size) {
+//        Pageable pageable = PageRequest.of(page,size);
         return service.getDoctors(pageable).stream()
                 .map(mapper::mapToDTO)
                 .collect(toList());

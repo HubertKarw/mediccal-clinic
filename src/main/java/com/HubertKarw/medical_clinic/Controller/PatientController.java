@@ -35,9 +35,7 @@ public class PatientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found patients", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PatientDTO.class))})})
     @GetMapping
-    public List<PatientDTO> getPatients(@RequestParam(name = "page", defaultValue = "0") int page) {
-        int size = 2;
-        Pageable pageable = PageRequest.of(page,size);
+    public List<PatientDTO> getPatients(Pageable pageable) {
         return patientService.getPatients(pageable).stream()
                 .map(mapper::mapToDTO)
                 .collect(Collectors.toList());
