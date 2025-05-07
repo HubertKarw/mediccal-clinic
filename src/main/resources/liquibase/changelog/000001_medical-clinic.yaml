@@ -1,0 +1,154 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: XYZ
+      changes:
+        - createTable:
+            tableName: USERS_TABLE
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: USERNAME
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PASSWORD
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: PATIENT
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: EMAIL
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: USER_ID
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    unique:  true
+                    foreignKey: true
+                    foreignKeyName: FK_PATIENT_USER
+                    references: USERS_TABLE(ID)
+              - column:
+                  name: ID_CARD_NO
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: FIRST_NAME
+                  type: varchar(255)
+              - column:
+                  name: LAST_NAME
+                  type: varchar(255)
+              - column:
+                  name: PHONE_NUMBER
+                  type: varchar(255)
+              - column:
+                  name: BIRTHDAY
+                  type: date
+
+        - createTable:
+            tableName: INSTITUTION
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+              - column:
+                  name: NAME
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: LOCATION
+                  type: varchar(255)
+              - column:
+                  name: POSTAL_CODE
+                  type: varchar(255)
+              - column:
+                  name: STREET_ADDRESS
+                  type: varchar(255)
+              - column:
+                  name: STREET_NUMBER
+                  type: INT
+
+
+        - createTable:
+            tableName: DOCTOR
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: EMAIL
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: USER_ID
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKey: true
+                    foreignKeyName: FK_DOCTOR_USER
+                    references: USERS_TABLE(ID)
+              - column:
+                  name: FIRST_NAME
+                  type: varchar(255)
+              - column:
+                  name: LAST_NAME
+                  type: varchar(255)
+              - column:
+                  name: SPECIALIZATION
+                  type: varchar(255)
+
+        - createTable:
+            tableName: DOCTOR_INSTITUTION
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: DOCTOR_ID
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKey: true
+                    foreignKeyName: FK_DOCTOR
+                    references: DOCTOR(ID)
+              - column:
+                  name: INSTITUTION_ID
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKey: true
+                    foreignKeyName: FK_INSTITUTION
+                    references: INSTITUTION(ID)
