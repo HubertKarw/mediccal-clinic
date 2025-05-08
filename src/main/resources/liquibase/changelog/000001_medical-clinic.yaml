@@ -74,6 +74,10 @@ databaseChangeLog:
               - column:
                   name: ID
                   type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
               - column:
                   name: NAME
                   type: varchar(255)
@@ -130,25 +134,38 @@ databaseChangeLog:
             tableName: DOCTOR_INSTITUTION
             columns:
               - column:
-                  name: ID
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
                   name: DOCTOR_ID
                   type: BIGINT
                   constraints:
                     nullable: false
-                    foreignKey: true
-                    foreignKeyName: FK_DOCTOR
-                    references: DOCTOR(ID)
               - column:
                   name: INSTITUTION_ID
                   type: BIGINT
                   constraints:
                     nullable: false
-                    foreignKey: true
-                    foreignKeyName: FK_INSTITUTION
-                    references: INSTITUTION(ID)
+
+        - addPrimaryKey:
+            tableName: DOCTOR_INSTITUTION
+            columnNames: INSTITUTION_ID,DOCTOR_ID
+            constraintName: PK_DOCTOR_INSTITUTION
+
+        - addForeignKeyConstraint:
+            baseTableName: DOCTOR_INSTITUTION
+            baseColumnNames: INSTITUTION_ID
+            referencedTableName: INSTITUTION
+            referencedColumnNames: ID
+            constraintName: fk_doctor_institution_institution
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+           baseTableName: DOCTOR_INSTITUTION
+           baseColumnNames: DOCTOR_ID
+           referencedTableName: DOCTOR
+           referencedColumnNames: ID
+           constraintName: fk_doctor_institution_doctor
+           onDelete: CASCADE
+
+
+
+
+
