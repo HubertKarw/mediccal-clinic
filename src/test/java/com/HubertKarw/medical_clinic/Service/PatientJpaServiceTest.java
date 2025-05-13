@@ -27,6 +27,7 @@ public class PatientJpaServiceTest {
         this.patientJpaRepository = Mockito.mock(PatientJpaRepository.class);
         this.patientJpaService = new PatientJpaService(patientJpaRepository);
     }
+
     @Test
     void getPatient_patientsExist_patientsReturned() {
         //given
@@ -37,18 +38,18 @@ public class PatientJpaServiceTest {
         PageImpl<Patient> page = new PageImpl<>(List.of(patient1, patient2, patient3));
         when(patientJpaRepository.findAll(any(Pageable.class))).thenReturn(page);
         //when
-        List<Patient> result = patientJpaService.getPatients(PageRequest.of(0,3));
+        List<Patient> result = patientJpaService.getPatients(PageRequest.of(0, 3));
         //then
         assertAll(
-                () -> assertEquals(3,result.size()),
-                () -> assertEquals(123,result.get(0).getId()),
-                () -> assertEquals(124,result.get(1).getId()),
-                () -> assertEquals(125,result.get(2).getId())
+                () -> assertEquals(3, result.size()),
+                () -> assertEquals(123, result.get(0).getId()),
+                () -> assertEquals(124, result.get(1).getId()),
+                () -> assertEquals(125, result.get(2).getId())
         );
     }
 
     @Test
-    void getPatient_patientExists_patientReturned(){
+    void getPatient_patientExists_patientReturned() {
         //given
         User user = new User(1l, "123", "321");
         Patient patient = new Patient(123L, "x1", user, "123", "xyz", "xzy", "123", LocalDate.of(1999, 11, 11));
@@ -56,11 +57,11 @@ public class PatientJpaServiceTest {
         //when
         Patient result = patientJpaService.getPatient("x1");
         //then
-        assertEquals(patient.getId(),result.getId());
+        assertEquals(patient.getId(), result.getId());
     }
 
     @Test
-    void addPatient_validPatient_patientAdded(){
+    void addPatient_validPatient_patientAdded() {
         //given
         User user = new User(1l, "123", "321");
         Patient patient = new Patient(null, "x1", user, "123", "xyz", "xzy", "123", LocalDate.of(1999, 11, 11));
@@ -69,10 +70,11 @@ public class PatientJpaServiceTest {
         //when
         Patient result = patientJpaService.addPatient(patient);
         //then
-        assertEquals(patient.getEmail(),patientSaved.getEmail());
+        assertEquals(patient.getEmail(), patientSaved.getEmail());
     }
+
     @Test
-    void removePatient_patientExists_patientRemoved(){
+    void removePatient_patientExists_patientRemoved() {
         //given
         User user = new User(1l, "123", "321");
         Patient patient = new Patient(null, "x1", user, "123", "xyz", "xzy", "123", LocalDate.of(1999, 11, 11));
@@ -81,10 +83,11 @@ public class PatientJpaServiceTest {
         //when
         patientJpaService.removePatient(patient.getEmail());
         //then
-        assertEquals(1,1);
+        assertEquals(1, 1);
     }
+
     @Test
-    void modifyPatient_patientExists_patientModified(){
+    void modifyPatient_patientExists_patientModified() {
         User user = new User(1l, "123", "321");
         Patient patient = new Patient(null, "x1", user, "123", "xyz", "xzy", "123", LocalDate.of(1999, 11, 11));
         Patient modifiedPatient = new Patient(123L, "x1", user, "123", "xyzz", "xzy", "123", LocalDate.of(1999, 11, 11));
@@ -92,8 +95,8 @@ public class PatientJpaServiceTest {
         when(patient.update(any(Patient.class))).thenReturn(modifiedPatient);
         when(patientJpaRepository.save(any())).thenReturn(modifiedPatient);
         //when
-        patientJpaService.modifyPatient("x1",modifiedPatient);
+        patientJpaService.modifyPatient("x1", modifiedPatient);
         //then
-        assertNotEquals(patient.getFirstName(),modifiedPatient.getFirstName());
+        assertNotEquals(patient.getFirstName(), modifiedPatient.getFirstName());
     }
 }
