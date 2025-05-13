@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 
 public class PatientJpaServiceTest {
     PatientJpaRepository patientJpaRepository;
@@ -83,7 +82,7 @@ public class PatientJpaServiceTest {
         //when
         patientJpaService.removePatient(patient.getEmail());
         //then
-        assertEquals(1, 1);
+        verify(patientJpaRepository).delete(patient);
     }
 
     @Test
@@ -92,11 +91,10 @@ public class PatientJpaServiceTest {
         Patient patient = new Patient(null, "x1", user, "123", "xyz", "xzy", "123", LocalDate.of(1999, 11, 11));
         Patient modifiedPatient = new Patient(123L, "x1", user, "123", "xyzz", "xzy", "123", LocalDate.of(1999, 11, 11));
         when(patientJpaRepository.findByEmail(any())).thenReturn(Optional.of(patient));
-        when(patient.update(any(Patient.class))).thenReturn(modifiedPatient);
         when(patientJpaRepository.save(any())).thenReturn(modifiedPatient);
         //when
-        patientJpaService.modifyPatient("x1", modifiedPatient);
+        Patient result = patientJpaService.modifyPatient("x1", modifiedPatient);
         //then
-        assertNotEquals(patient.getFirstName(), modifiedPatient.getFirstName());
+        assertEquals(result.getFirstName(),modifiedPatient.getFirstName());
     }
 }
