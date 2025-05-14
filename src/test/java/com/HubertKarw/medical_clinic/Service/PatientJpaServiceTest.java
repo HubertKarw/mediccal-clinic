@@ -95,6 +95,6 @@ public class PatientJpaServiceTest {
         //when
         Patient result = patientJpaService.modifyPatient("x1", modifiedPatient);
         //then
-        assertEquals(result.getFirstName(),modifiedPatient.getFirstName());
+        assertEquals(modifiedPatient.getFirstName(),result.getFirstName());
     }
 }
