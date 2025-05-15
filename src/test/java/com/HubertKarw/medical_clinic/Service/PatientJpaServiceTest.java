@@ -68,8 +68,8 @@ public class PatientJpaServiceTest {
         when(patientJpaRepository.findByEmail("123")).thenReturn(Optional.empty());
         //when
         //then
-        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class,()->patientJpaService.getPatient("123"));
-        assertEquals("Patient with this email does not exist",exception.getMessage());
+        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class, () -> patientJpaService.getPatient("123"));
+        assertEquals("Patient with this email does not exist", exception.getMessage());
     }
 
     @Test
@@ -99,13 +99,13 @@ public class PatientJpaServiceTest {
     }
 
     @Test
-    void removePatient_patientDoesNotExist_throwException(){
+    void removePatient_patientDoesNotExist_throwException() {
         //given
         when(patientJpaRepository.findByEmail("123")).thenReturn(Optional.empty());
         //when
         //then
-        PatientNotFoundException exception = Assertions.assertThrows(PatientNotFoundException.class,()->patientJpaService.removePatient("123"));
-        assertEquals("no patient with this email",exception.getMessage());
+        PatientNotFoundException exception = Assertions.assertThrows(PatientNotFoundException.class, () -> patientJpaService.removePatient("123"));
+        assertEquals("no patient with this email", exception.getMessage());
     }
 
     @Test
@@ -118,18 +118,18 @@ public class PatientJpaServiceTest {
         //when
         Patient result = patientJpaService.modifyPatient("x1", modifiedPatient);
         //then
-        assertEquals(modifiedPatient.getFirstName(),result.getFirstName());
+        assertEquals(modifiedPatient.getFirstName(), result.getFirstName());
     }
 
     @Test
-    void modifyPatient_patientDoesNotExist_throwException(){
+    void modifyPatient_patientDoesNotExist_throwException() {
         //given
         User user = new User(1l, "123", "321");
         Patient modifiedPatient = new Patient(123L, "x1", user, "123", "xyzz", "xzy", "123", LocalDate.of(1999, 11, 11));
         when(patientJpaRepository.findByEmail("123")).thenReturn(Optional.empty());
         //when
         //then
-        PatientNotFoundException exception = Assertions.assertThrows(PatientNotFoundException.class,()->patientJpaService.modifyPatient("123",modifiedPatient));
-        assertEquals("no patient with this email",exception.getMessage());
+        PatientNotFoundException exception = Assertions.assertThrows(PatientNotFoundException.class, () -> patientJpaService.modifyPatient("123", modifiedPatient));
+        assertEquals("no patient with this email", exception.getMessage());
     }
 }

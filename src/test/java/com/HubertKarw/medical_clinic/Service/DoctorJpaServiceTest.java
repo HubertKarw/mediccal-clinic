@@ -84,7 +84,7 @@ public class DoctorJpaServiceTest {
         when(doctorJpaRepository.findByEmail("xyz@xyz.com")).thenReturn(Optional.empty());
         //when
         //then
-        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class,()->doctorJpaService.getDoctor("xyz@xyz.com"));
+        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class, () -> doctorJpaService.getDoctor("xyz@xyz.com"));
         assertEquals("Doctor not found", exception.getMessage());
     }
 
@@ -119,7 +119,7 @@ public class DoctorJpaServiceTest {
         when(doctorJpaRepository.findByEmail("xyz@xyz.com")).thenReturn(Optional.empty());
         //when
         //then
-        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class,()->doctorJpaService.removeDoctor("xyz@xyz.com"));
+        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class, () -> doctorJpaService.removeDoctor("xyz@xyz.com"));
         assertEquals("Doctor not found", exception.getMessage());
     }
 
@@ -140,6 +140,7 @@ public class DoctorJpaServiceTest {
         assertEquals(doc.getLastName(), modifiedDoc.getLastName());
         verify(doctorJpaRepository).save(doc);
     }
+
     @Test
     void modifyDoctor_doctorDoesNotExists_throwException() {
         //given
@@ -148,7 +149,7 @@ public class DoctorJpaServiceTest {
         when(doctorJpaRepository.findByEmail("xyz@xyz.com")).thenReturn(Optional.empty());
         //when
         //then
-        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class,()->doctorJpaService.modifyDoctor("xyz@xyz.com",doc));
+        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class, () -> doctorJpaService.modifyDoctor("xyz@xyz.com", doc));
         assertEquals("Doctor not found", exception.getMessage());
     }
 
@@ -165,6 +166,7 @@ public class DoctorJpaServiceTest {
         //then
         assertEquals(institution, doc.getInstitutions().get(0));
     }
+
     @Test
     void assignToInstitution_doctorDoesNotExists_throwException() {
         //given
@@ -175,10 +177,11 @@ public class DoctorJpaServiceTest {
         when(institutionJpaRepository.findByName("name")).thenReturn(Optional.of(institution));
         //when
         //then
-        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class,()->doctorJpaService.assignToInstitution("xyz","name"));
+        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class, () -> doctorJpaService.assignToInstitution("xyz", "name"));
         assertEquals("Doctor not found", exception.getMessage());
         assertNotEquals("Institution not found", exception.getMessage());
     }
+
     @Test
     void assignToInstitution_institutionDoesNotExists_throwException() {
         //given
@@ -189,7 +192,7 @@ public class DoctorJpaServiceTest {
         when(institutionJpaRepository.findByName("name")).thenReturn(Optional.empty());
         //when
         //then
-        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class,()->doctorJpaService.assignToInstitution("xyz","name"));
+        MedicalClinicException exception = Assertions.assertThrows(MedicalClinicException.class, () -> doctorJpaService.assignToInstitution("xyz", "name"));
         assertNotEquals("Doctor not found", exception.getMessage());
         assertEquals("Institution not found", exception.getMessage());
     }

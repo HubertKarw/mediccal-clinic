@@ -3,6 +3,7 @@ package com.HubertKarw.medical_clinic.Service;
 import com.HubertKarw.medical_clinic.Model.Doctor;
 import com.HubertKarw.medical_clinic.Model.User;
 import com.HubertKarw.medical_clinic.Repository.UserJpaRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -67,38 +68,69 @@ public class UserJpaServiceTest {
     }
 
     @Test
-    void addUser_validUser_userAdded(){
+    void getUser_userDoesNotExist_throwException() {
+        //given
+        when(userJpaRepository.findByUsername("123")).thenReturn(Optional.empty());
+        //when
+        //then
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> userJpaService.getUser("123"));
+        assertEquals("no such user", exception.getMessage());
+    }
+
+    @Test
+    void addUser_validUser_userAdded() {
         //given
         User user = new User(1L, "123", "321");
         when(userJpaRepository.save(any())).thenReturn(user);
         //when
         User result = userJpaService.addUser(user);
         //then
-        assertEquals(1L,result.getId());
+        assertEquals(1L, result.getId());
         verify(userJpaRepository).save(user);
     }
 
     @Test
-    void removeUser_userExists_userRemoved(){
+    void removeUser_userExists_userRemoved() {
         //given
         User user = new User(1L, "123", "321");
         when(userJpaRepository.findByUsername("123")).thenReturn(Optional.of(user));
         //when
         userJpaService.removeUser("123");
-       //then
-       verify(userJpaRepository).delete(user);
+        //then
+        verify(userJpaRepository).delete(user);
     }
 
     @Test
-    void modifyUser_userExists_userModified(){
+    void removeUser_userDoesNotExist_throwException() {
+        //given
+        when(userJpaRepository.findByUsername("123")).thenReturn(Optional.empty());
+        //when
+        //then
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> userJpaService.removeUser("123"));
+        assertEquals("no such user", exception.getMessage());
+    }
+
+    @Test
+    void modifyUser_userExists_userModified() {
         User user = new User(1L, "123", "321");
         User modifiedUser = new User(1L, "1234", "4321");
         when(userJpaRepository.findByUsername("123")).thenReturn(Optional.of(user));
         //when
-        User result = userJpaService.modifyUser("123",modifiedUser);
+        User result = userJpaService.modifyUser("123", modifiedUser);
         //then
         verify(userJpaRepository).save(user);
-        assertEquals(user.getId(),modifiedUser.getId());
+        assertEquals(user.getId(), modifiedUser.getId());
+    }
+
+    @Test
+    void modifyUser_userDoesNotExist_throwException() {
+        //given
+        User user = new User(1L, "123", "321");
+        when(userJpaRepository.findByUsername("123")).thenReturn(Optional.empty());
+        //when
+        //then
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> userJpaService.modifyUser("123", user));
+        assertEquals("no such user", exception.getMessage());
     }
 
 }

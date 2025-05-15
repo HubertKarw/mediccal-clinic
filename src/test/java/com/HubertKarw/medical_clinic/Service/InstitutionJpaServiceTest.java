@@ -1,5 +1,6 @@
 package com.HubertKarw.medical_clinic.Service;
 
+import com.HubertKarw.medical_clinic.Exception.MedicalClinicException;
 import com.HubertKarw.medical_clinic.Model.Institution;
 import com.HubertKarw.medical_clinic.Repository.InstitutionJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,8 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -42,34 +42,45 @@ public class InstitutionJpaServiceTest {
                 () -> assertEquals(1L, result.get(0).getId()),
                 () -> assertEquals(2L, result.get(1).getId()),
                 () -> assertEquals(3L, result.get(2).getId()),
-                () -> assertEquals("n",result.get(0).getName())
+                () -> assertEquals("n", result.get(0).getName())
         );
     }
+
     @Test
-    void getInstitution_institutionExists_institutionReturned(){
+    void getInstitution_institutionExists_institutionReturned() {
         //given
         Institution inst = new Institution(1L, "n", "l", "pc", "sa", 1);
         when(institutionJpaRepository.findByName("n")).thenReturn(Optional.of(inst));
         //when
         Institution result = institutionJpaService.getInstitution("n");
         //then
-        assertEquals(result.getId(),inst.getId());
+        assertEquals(result.getId(), inst.getId());
     }
 
     @Test
-    void addInstitution_institutionValid_institutionAdded(){
+    void getInstitution_InstitutionDoesNotExist_throwException() {
+        //given
+        when(institutionJpaRepository.findByName("n")).thenReturn(Optional.empty());
+        //when
+        //then
+        MedicalClinicException exception = assertThrows(MedicalClinicException.class, () -> institutionJpaService.getInstitution("n"));
+        assertEquals("INSTITUTION NOT FOUND", exception.getMessage());
+    }
+
+    @Test
+    void addInstitution_institutionValid_institutionAdded() {
         //given
         Institution inst = new Institution(1L, "n", "l", "pc", "sa", 1);
         when(institutionJpaRepository.save(any())).thenReturn(inst);
         //when
         Institution result = institutionJpaService.addInstitution(inst);
         //then
-        assertEquals(inst.getId(),result.getId());
+        assertEquals(inst.getId(), result.getId());
         verify(institutionJpaRepository).save(inst);
     }
 
     @Test
-    void removeInstitution_institutionExists_institutionRemoved(){
+    void removeInstitution_institutionExists_institutionRemoved() {
         //given
         Institution inst = new Institution(1L, "n", "l", "pc", "sa", 1);
         when(institutionJpaRepository.findByName("n")).thenReturn(Optional.of(inst));
@@ -80,17 +91,38 @@ public class InstitutionJpaServiceTest {
     }
 
     @Test
-    void modifyInstitution_institutionExists_institutionModified(){
+    void removeInstitution_InstitutionDoesNotExist_throwException() {
+        //given
+        when(institutionJpaRepository.findByName("n")).thenReturn(Optional.empty());
+        //when
+        //then
+        MedicalClinicException exception = assertThrows(MedicalClinicException.class, () -> institutionJpaService.removeInstitution("n"));
+        assertEquals("INSTITUTION NOT FOUND", exception.getMessage());
+    }
+
+    @Test
+    void modifyInstitution_institutionExists_institutionModified() {
         //given
         Institution inst = new Institution(1L, "n", "l", "pc", "sa", 1);
         Institution instModified = new Institution(1L, "name", "loc", "pc", "sa", 1);
         when(institutionJpaRepository.findByName("n")).thenReturn(Optional.of(inst));
         //when
-        Institution result = institutionJpaService.modifyInstitution("n",instModified);
+        Institution result = institutionJpaService.modifyInstitution("n", instModified);
         //then
-        assertEquals(instModified.getId(),inst.getId());
-        assertEquals(instModified.getName(),inst.getName());
-        assertEquals(instModified.getLocation(),inst.getLocation());
+        assertEquals(instModified.getId(), inst.getId());
+        assertEquals(instModified.getName(), inst.getName());
+        assertEquals(instModified.getLocation(), inst.getLocation());
         verify(institutionJpaRepository).save(inst);
+    }
+
+    @Test
+    void modifyInstitution_InstitutionDoesNotExist_throwException() {
+        //given
+        Institution inst = new Institution(1L, "n", "l", "pc", "sa", 1);
+        when(institutionJpaRepository.findByName("n")).thenReturn(Optional.empty());
+        //when
+        //then
+        MedicalClinicException exception = assertThrows(MedicalClinicException.class, () -> institutionJpaService.modifyInstitution("n", inst));
+        assertEquals("INSTITUTION NOT FOUND", exception.getMessage());
     }
 }
