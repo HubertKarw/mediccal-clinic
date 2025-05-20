@@ -14,12 +14,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: START_VISIT
+                  name: VISIT_START
                   type: TIMESTAMP
                   constraints:
                     nullable: false
               - column:
-                  name: END_VISIT
+                  name: VISIT_END
                   type: TIMESTAMP
                   constraints:
                     nullable: false
