@@ -50,13 +50,12 @@ public class VisitController {
 //    public VisitDTO createVisit(@RequestBody CreateVisitCommand command){
 //        return mapper.mapToDTO(service.createVisit(mapper.mapToVisit(command)));
 //    }
-    @PostMapping("/doctor/{docEmail}/patient/{patEmail}")
+    @PostMapping("/doctor/{docEmail}")
     @ResponseStatus(HttpStatus.CREATED)
-    public VisitDTO createVisit(@RequestBody CreateVisitCommand command, @PathVariable("docEmail") String doctorEmail, @PathVariable("patEmail") String patientEmail){
+    public VisitDTO createVisitWindow(@RequestBody CreateVisitCommand command, @PathVariable("docEmail") String doctorEmail){
         System.out.println("IN POST");
         Visit visit = mapper.mapToVisit(command);
         visit.setDoctor(doctorService.getDoctor(doctorEmail));
-        visit.setPatient(patientService.getPatient(patientEmail));
         return mapper.mapToDTO(service.createVisit(visit));
     }
 
@@ -68,5 +67,10 @@ public class VisitController {
     @PutMapping("/{id}")
     public VisitDTO modifyVisit(@PathVariable("id") long id, @RequestBody CreateVisitCommand command){
         return mapper.mapToDTO(service.modifyVisit(id, mapper.mapToVisit(command)));
+    }
+
+    @PatchMapping("/{id}/patient/{patientEmail}")
+    public VisitDTO assignPatient(@PathVariable("id") long id, @PathVariable("patientEmail") String email){
+        return mapper.mapToDTO(service.assignPatient(id,email));
     }
 }
