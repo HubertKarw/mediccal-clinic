@@ -1,9 +1,11 @@
 package com.HubertKarw.medical_clinic.Validation;
 
+import com.HubertKarw.medical_clinic.Exception.MedicalClinicException;
 import com.HubertKarw.medical_clinic.Exception.VisitDateException;
 import com.HubertKarw.medical_clinic.Model.Doctor;
 import com.HubertKarw.medical_clinic.Model.Visit;
 import com.HubertKarw.medical_clinic.Repository.VisitJpaRepository;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +16,12 @@ public class VisitJpaValidator {
         visitTimeMoreThanZero(visit.getVisitStart(),visit.getVisitEnd());
         timeFrameInQuarterOfAnHour(visit.getVisitStart(),visit.getVisitEnd());
         visitIsInFuture(visit.getVisitStart());
+    }
+
+    public static void validatePatientAssignation(Visit visit){
+        if (visit.getPatient()!=null){
+            throw new MedicalClinicException("Cannot assign patient to already booked visit", HttpStatus.BAD_REQUEST);
+        }
     }
 
     private static void visitTimeMoreThanZero(LocalDateTime start, LocalDateTime end){

@@ -69,6 +69,7 @@ public class VisitJpaService {
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
         Patient patient = patientRepository.findByEmail(patientEmail)
                 .orElseThrow(() -> new MedicalClinicException("Patient not found", HttpStatus.NOT_FOUND));
+        VisitJpaValidator.validatePatientAssignation(visit);
         visit.setPatient(patient);
         return repository.save(visit);
     }
