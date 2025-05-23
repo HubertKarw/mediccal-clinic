@@ -17,7 +17,9 @@ import java.util.Optional;
 @Repository
 public interface VisitJpaRepository extends JpaRepository<Visit, Long> {
     Page<Visit> findByDoctor(Doctor doctor, Pageable pageable);
+
     Page<Visit> findByPatient(Patient patient, Pageable pageable);
+
     @Query("SELECT v FROM Visit v WHERE v.visitStart <= :newVisitEnd AND v.visitEnd >= :newVisitStart AND v.doctor = :doctor")
     List<Visit> findOverlappingVisits(@Param("newVisitStart") LocalDateTime visitStart, @Param("newVisitEnd") LocalDateTime visitEnd, @Param("doctor") Doctor doctor);
 }

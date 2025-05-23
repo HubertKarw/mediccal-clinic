@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Doctor", description = "Doctor operations")
-@RequestMapping("/doctor")
+@RequestMapping("/doctors")
 public class DoctorController {
     private final DoctorJpaService service;
     private final DoctorStructMapper mapper;

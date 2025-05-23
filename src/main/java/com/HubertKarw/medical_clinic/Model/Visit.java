@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
 @Data
 @Entity
 @NoArgsConstructor
@@ -33,25 +32,23 @@ public class Visit {
     private Patient patient;
 
     public Visit update(Visit newVisit) {
-//        this.setDoctor( newVisit.getDoctor());
-        this.setVisitStart( newVisit.getVisitStart());
-        this.setVisitEnd( newVisit.getVisitEnd());
-//        this.setPatient( newVisit.getPatient());
+        this.setVisitStart(newVisit.getVisitStart());
+        this.setVisitEnd(newVisit.getVisitEnd());
         return this;
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
 
         if (!(o instanceof Visit)) return false;
 
         Visit other = (Visit) o;
 
-        return id!= null && id.equals(other.getId());
+        return id != null && id.equals(other.getId());
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return getClass().hashCode();
     }
 }

@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface VisitStructMapper {
     VisitDTO mapToDTO(Visit visit);
+
     Visit mapToVisit(CreateVisitCommand command);
 }

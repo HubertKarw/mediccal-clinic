@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/visit")
+@RequestMapping("/visits")
 public class VisitController {
     private final VisitJpaService service;
     private final DoctorJpaService doctorService;
@@ -26,51 +26,51 @@ public class VisitController {
 
 
     @GetMapping
-    public List<VisitDTO> getVisits(Pageable pageable){
+    public List<VisitDTO> getVisits(Pageable pageable) {
         return service.getVisits(pageable).stream().map(mapper::mapToDTO).toList();
     }
 
-    @GetMapping("/patient/{email}")
-    public List<VisitDTO> getVisitsByPatient(@PathVariable("email") String email, Pageable pageable){
+    @GetMapping("/patients/{email}")
+    public List<VisitDTO> getVisitsByPatient(@PathVariable("email") String email, Pageable pageable) {
         return service.getVisitsByPatient(pageable, email).stream().map(mapper::mapToDTO).toList();
     }
 
-    @GetMapping("/doctor/{email}")
-    public List<VisitDTO> getVisitsByDoctor(@PathVariable("email") String email, Pageable pageable){
+    @GetMapping("/doctors/{email}")
+    public List<VisitDTO> getVisitsByDoctor(@PathVariable("email") String email, Pageable pageable) {
         return service.getVisitsByDoctor(pageable, email).stream().map(mapper::mapToDTO).toList();
     }
 
     @GetMapping("/{id}")
-    public VisitDTO getVisit(@PathVariable long id){
+    public VisitDTO getVisit(@PathVariable long id) {
         return mapper.mapToDTO(service.getVisit(id));
     }
 
-//    @PostMapping
+    //    @PostMapping
 //    @ResponseStatus(HttpStatus.CREATED)
 //    public VisitDTO createVisit(@RequestBody CreateVisitCommand command){
 //        return mapper.mapToDTO(service.createVisit(mapper.mapToVisit(command)));
 //    }
-    @PostMapping("/doctor/{docEmail}")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public VisitDTO createVisitWindow(@RequestBody CreateVisitCommand command, @PathVariable("docEmail") String doctorEmail){
-        System.out.println("IN POST");
+    public VisitDTO createVisitWindow(@RequestBody CreateVisitCommand command) {
         Visit visit = mapper.mapToVisit(command);
-        visit.setDoctor(doctorService.getDoctor(doctorEmail));
+        visit.setDoctor(doctorService.getDoctor(command.getDoctorEmail()));
         return mapper.mapToDTO(service.createVisit(visit));
     }
 
     @DeleteMapping("/{id}")
-    public void removeVisit(@PathVariable("id") long id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeVisit(@PathVariable("id") Long id) {
         service.removeVisit(id);
     }
 
     @PutMapping("/{id}")
-    public VisitDTO modifyVisit(@PathVariable("id") long id, @RequestBody CreateVisitCommand command){
+    public VisitDTO modifyVisit(@PathVariable("id") Long id, @RequestBody CreateVisitCommand command) {
         return mapper.mapToDTO(service.modifyVisit(id, mapper.mapToVisit(command)));
     }
 
-    @PatchMapping("/{id}/patient/{patientEmail}")
-    public VisitDTO assignPatient(@PathVariable("id") long id, @PathVariable("patientEmail") String email){
-        return mapper.mapToDTO(service.assignPatient(id,email));
+    @PatchMapping("/{id}/patients/{patientEmail}")
+    public VisitDTO assignPatient(@PathVariable("id") Long id, @PathVariable("patientEmail") String email) {
+        return mapper.mapToDTO(service.assignPatient(id, email));
     }
 }

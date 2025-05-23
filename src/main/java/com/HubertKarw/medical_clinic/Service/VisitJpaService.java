@@ -23,48 +23,50 @@ public class VisitJpaService {
     private final VisitJpaRepository repository;
     private final DoctorJpaRepository doctorRepository;
     private final PatientJpaRepository patientRepository;
-    public List<Visit> getVisits(Pageable pageable){
+
+    public List<Visit> getVisits(Pageable pageable) {
         Page<Visit> visits = repository.findAll(pageable);
         return visits.getContent();
     }
 
-    public List<Visit> getVisitsByDoctor(Pageable pageable, String email){
+    public List<Visit> getVisitsByDoctor(Pageable pageable, String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
-                .orElseThrow(()->new MedicalClinicException("Doctor not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new MedicalClinicException("Doctor not found", HttpStatus.NOT_FOUND));
         Page<Visit> visits = repository.findByDoctor(doctor, pageable);
         return visits.getContent();
     }
-    public List<Visit> getVisitsByPatient(Pageable pageable, String email){
+
+    public List<Visit> getVisitsByPatient(Pageable pageable, String email) {
         Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(()->new MedicalClinicException("Patient not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new MedicalClinicException("Patient not found", HttpStatus.NOT_FOUND));
         Page<Visit> visits = repository.findByPatient(patient, pageable);
         return visits.getContent();
     }
 
-    public Visit getVisit(Long id){
+    public Visit getVisit(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
     }
 
-    public Visit createVisit(Visit visit){
-        VisitJpaValidator.validateCreationTime(visit,repository);
+    public Visit createVisit(Visit visit) {
+        VisitJpaValidator.validateCreationTime(visit, repository);
         return repository.save(visit);
     }
 
-    public void removeVisit(Long id){
+    public void removeVisit(Long id) {
         Visit visit = repository.findById(id)
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
         repository.delete(visit);
     }
 
-    public Visit modifyVisit(Long id, Visit newVisit){
+    public Visit modifyVisit(Long id, Visit newVisit) {
         Visit visit = repository.findById(id)
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
         visit = visit.update(newVisit);
         return repository.save(visit);
     }
 
-    public Visit assignPatient(Long id, String patientEmail){
+    public Visit assignPatient(Long id, String patientEmail) {
         Visit visit = repository.findById(id)
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
         Patient patient = patientRepository.findByEmail(patientEmail)

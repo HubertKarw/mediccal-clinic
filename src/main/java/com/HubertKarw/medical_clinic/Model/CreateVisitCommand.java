@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class CreateVisitCommand {
     private LocalDateTime visitStart;
     private LocalDateTime visitEnd;
+    private String doctorEmail;
 //    private Doctor doctor;
 //    private Patient patient;
 }

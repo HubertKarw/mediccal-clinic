@@ -1,7 +1,5 @@
 package com.HubertKarw.medical_clinic.Model;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
