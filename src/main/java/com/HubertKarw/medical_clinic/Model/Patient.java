@@ -20,7 +20,7 @@ public class Patient {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    @Column(name = "idcard")
+    @Column(name = "id_card_no")
     private String idCardNo;
     @Column(name = "first_name")
     private String firstName;

@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Institution", description = "Institution operations")
-@RequestMapping("/institution")
+@RequestMapping("/institutions")
 public class InstitutionController {
     private final InstitutionJpaService service;
     private final InstitutionStructMapper mapper;
