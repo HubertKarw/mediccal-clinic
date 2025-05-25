@@ -6,6 +6,7 @@ import com.HubertKarw.medical_clinic.Model.DoctorDTO;
 import com.HubertKarw.medical_clinic.Model.Institution;
 import com.HubertKarw.medical_clinic.Repository.DoctorJpaRepository;
 import com.HubertKarw.medical_clinic.Repository.InstitutionJpaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,16 +31,19 @@ public class DoctorJpaService {
                 .orElseThrow(() -> new MedicalClinicException("Doctor not found", HttpStatus.NOT_FOUND));
     }
 
+    @Transactional
     public Doctor addDoctor(Doctor doctor) {
         return repository.save(doctor);
     }
 
+    @Transactional
     public void removeDoctor(String email) {
         Doctor doctor = repository.findByEmail(email)
                 .orElseThrow(() -> new MedicalClinicException("Doctor not found", HttpStatus.NOT_FOUND));
         repository.delete(doctor);
     }
 
+    @Transactional
     public Doctor modifyDoctor(String email, Doctor newDoctor) {
         Doctor doctor = repository.findByEmail(email)
                 .orElseThrow(() -> new MedicalClinicException("Doctor not found", HttpStatus.NOT_FOUND));
@@ -47,6 +51,7 @@ public class DoctorJpaService {
         return repository.save(doctor);
     }
 
+    @Transactional
     public Doctor assignToInstitution(String email, String name) {
         Doctor doctor = repository.findByEmail(email)
                 .orElseThrow(() -> new MedicalClinicException("Doctor not found", HttpStatus.NOT_FOUND));

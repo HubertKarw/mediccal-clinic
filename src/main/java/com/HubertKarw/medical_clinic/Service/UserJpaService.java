@@ -2,6 +2,7 @@ package com.HubertKarw.medical_clinic.Service;
 
 import com.HubertKarw.medical_clinic.Model.User;
 import com.HubertKarw.medical_clinic.Repository.UserJpaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,16 +25,19 @@ public class UserJpaService {
                 .orElseThrow(() -> new IllegalArgumentException("no such user"));
     }
 
+    @Transactional
     public User addUser(User user) {
         return repository.save(user);
     }
 
+    @Transactional
     public void removeUser(String username) {
         User user = repository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("no such user"));
         repository.delete(user);
     }
 
+    @Transactional
     public User modifyUser(String username, User newUser) {
         User user = repository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("no such user"));

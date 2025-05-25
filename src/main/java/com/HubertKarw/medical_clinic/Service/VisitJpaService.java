@@ -8,6 +8,7 @@ import com.HubertKarw.medical_clinic.Repository.DoctorJpaRepository;
 import com.HubertKarw.medical_clinic.Repository.PatientJpaRepository;
 import com.HubertKarw.medical_clinic.Repository.VisitJpaRepository;
 import com.HubertKarw.medical_clinic.Validation.VisitJpaValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,17 +49,20 @@ public class VisitJpaService {
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
     }
 
+    @Transactional
     public Visit createVisit(Visit visit) {
         VisitJpaValidator.validateCreationTime(visit, repository);
         return repository.save(visit);
     }
 
+    @Transactional
     public void removeVisit(Long id) {
         Visit visit = repository.findById(id)
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
         repository.delete(visit);
     }
 
+    @Transactional
     public Visit modifyVisit(Long id, Visit newVisit) {
         Visit visit = repository.findById(id)
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
@@ -66,6 +70,7 @@ public class VisitJpaService {
         return repository.save(visit);
     }
 
+    @Transactional
     public Visit assignPatient(Long id, String patientEmail) {
         Visit visit = repository.findById(id)
                 .orElseThrow(() -> new MedicalClinicException("Visit not found", HttpStatus.NOT_FOUND));
