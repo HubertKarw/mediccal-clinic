@@ -3,6 +3,7 @@ package com.HubertKarw.medical_clinic.Service;
 import com.HubertKarw.medical_clinic.Exception.MedicalClinicException;
 import com.HubertKarw.medical_clinic.Model.Institution;
 import com.HubertKarw.medical_clinic.Repository.InstitutionJpaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,16 +27,19 @@ public class InstitutionJpaService {
                 .orElseThrow(() -> new MedicalClinicException("INSTITUTION NOT FOUND", HttpStatus.NOT_FOUND));
     }
 
+    @Transactional
     public Institution addInstitution(Institution institution) {
         return repository.save(institution);
     }
 
+    @Transactional
     public void removeInstitution(String name) {
         Institution institution = repository.findByName(name)
                 .orElseThrow(() -> new MedicalClinicException("INSTITUTION NOT FOUND", HttpStatus.NOT_FOUND));
         repository.delete(institution);
     }
 
+    @Transactional
     public Institution modifyInstitution(String name, Institution newInstitution) {
         Institution institution = repository.findByName(name)
                 .orElseThrow(() -> new MedicalClinicException("INSTITUTION NOT FOUND", HttpStatus.NOT_FOUND));
